@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Now Playing</title>
   <style>
-    /* Make everything fill the screen */
     html, body {
       margin: 0;
       padding: 0;
@@ -13,7 +12,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #111; /* Dark background */
+      background-color: #111;
       font-family: "Helvetica Neue", sans-serif;
       color: #fff;
     }
@@ -28,7 +27,7 @@
     }
 
     .cover img {
-      width: 60vmin; /* responsive size relative to viewport */
+      width: 60vmin;
       height: 60vmin;
       object-fit: cover;
       border-radius: 20px;
@@ -58,15 +57,18 @@
   </div>
 
   <script>
+    // Replace these with your GitHub Pages raw URLs
+    const JSON_URL = 'https://raw.githubusercontent.com/blesswitthabest/nowplayingdak/main/nowplaying.json';
+    const COVER_URL = 'https://raw.githubusercontent.com/blesswitthabest/nowplayingdak/main/cover.jpg';
+
     async function updateNowPlaying() {
       try {
-        const response = await fetch('nowplaying.json');
+        const response = await fetch(JSON_URL + '?cache=' + new Date().getTime()); // avoid caching
         const data = await response.json();
-        document.getElementById('song').textContent = data.song;
-        document.getElementById('artist').textContent = data.artist;
-        if(data.cover) {
-          document.getElementById('cover').src = data.cover;
-        }
+
+        document.getElementById('song').textContent = data.song || 'Unknown Song';
+        document.getElementById('artist').textContent = data.artist || 'Unknown Artist';
+        document.getElementById('cover').src = COVER_URL + '?cache=' + new Date().getTime(); // avoid caching
       } catch (err) {
         console.error(err);
       }
@@ -78,4 +80,5 @@
   </script>
 </body>
 </html>
+
 
